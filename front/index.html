@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPT Learning Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+</head>
+<body>
+    <div class="loader">
+        <div class="spinner"></div>
+        <span>Đang tải...</span>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky-header">
+        <div class="container">
+            <div class="logo" onclick="resetPage()">FPT Learning Hub</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="dropdown">
+                        <a href="#" data-section="explore">Khám phá</a>
+                        <div class="dropdown-content">
+                            <a href="#" data-section="instruments">Nhạc cụ dân tộc</a>
+                            <a href="#" data-section="martial-arts">Võ thuật</a>
+                        </div>
+                    </li>
+                    <li><a href="#" data-section="flashcards">Ôn Tập Flashcard</a></li>
+                    <li><a href="#" data-section="ranking">Xếp hạng</a></li>
+                    <li><a href="#" data-section="challenges">Thử thách</a></li>
+                    <li><a href="#" data-section="teacher-dashboard">Giảng viên</a></li>
+                    <li><a href="#" data-section="profile">Profile</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <div class="search-bar">
+                    <input type="text" id="search" placeholder="Tìm kiếm..." list="search-suggestions">
+                    <datalist id="search-suggestions"></datalist>
+                    <i class="fas fa-search"></i>
+                </div>
+                <button class="theme-toggle"><i class="fas fa-moon"></i></button>
+                <button class="login-btn ripple-btn">Đăng nhập</button>
+                <button class="signup-btn ripple-btn">Đăng ký</button>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero parallax">
+        <canvas id="particles-js"></canvas>
+        <div class="hero-content">
+            <h1>Học Nhạc Cụ & Vovinam Truyền Thống</h1>
+            <p>Khám phá văn hóa Việt qua các khóa học miễn phí dành cho sinh viên FPT.</p>
+            <button class="cta-btn ripple-btn" onclick="showLearningPage()">Bắt đầu ngay</button>
+        </div>
+    </section>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Learning Page -->
+    <section id="learning-page" class="section" style="display: none;">
+        <div class="container">
+            <h2>Khóa Học Truyền Thống</h2>
+            <div class="learning-content">
+                <div class="learning-section" id="instruments">
+                    <h3>Nhạc Cụ Dân Tộc</h3>
+                    <div class="content-grid" id="instrument-grid"></div>
+                </div>
+                <div class="learning-section" id="martial-arts">
+                    <h3>Võ Vovinam</h3>
+                    <div class="content-grid" id="martial-grid"></div>
+                </div>
+                <div class="learning-section" id="personal-courses">
+                    <h3>Khóa Học Yêu Thích</h3>
+                    <div class="content-grid droppable" id="personal-courses-grid"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  <!-- Flashcard Section -->
+<section id="flashcards" class="section" style="display: none;">
+    <div class="container">
+        <h2>Ôn Tập Flashcard</h2>
+        <div class="flashcard-container">
+            <select id="flashcard-category" class="flashcard-select">
+                <option value="sao">Sáo</option>
+                <option value="dan-tranh">Đàn Tranh</option>
+                <option value="dan-nguyet">Đàn Nguyệt</option>
+                <option value="vovinam">Vovinam</option>
+            </select>
+            <div class="flashcard-wrapper">
+                <div id="flashcard" class="flashcard">
+                    <div class="flashcard-front"></div>
+                    <div class="flashcard-back"></div>
+                </div>
+                <div class="flashcard-progress">
+                    <span id="flashcard-progress">0/0</span>
+                </div>
+            </div>
+            <div class="flashcard-controls">
+                <button id="prev-card" class="ripple-btn"><i class="fas fa-arrow-left"></i></button>
+                <button id="next-card" class="ripple-btn"><i class="fas fa-arrow-right"></i></button>
+                <button id="test-flashcard" class="ripple-btn">Kiểm tra</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Flashcard Test Modal -->
+<div id="flashcard-test-modal" class="modal">
+    <div class="modal-content glass">
+        <span class="close-modal">×</span>
+        <h2>Kiểm Tra Flashcard</h2>
+        <div id="flashcard-test-content" class="flashcard-test-content"></div>
+        <button id="submit-test" class="ripple-btn">Nộp bài</button>
+    </div>
+</div>
+
+    <!-- Challenges -->
+    <section id="challenges" class="section" style="display: none;">
+        <div class="container">
+            <h2>Thử Thách Truyền Thống</h2>
+            <div class="challenge-grid" id="challenge-grid"></div>
+            <button class="load-more-btn ripple-btn" id="load-challenges">Tải thêm</button>
+        </div>
+    </section>
+
+    <!-- Teacher Dashboard -->
+    <section id="teacher-dashboard" class="section" style="display: none;">
+        <div class="container">
+            <h2>Giao Diện Giảng Viên</h2>
+            <div class="teacher-content">
+                <div class="feedback-list" id="feedback-list"></div>
+                <div class="teacher-form">
+                    <h3>Gửi Nhận Xét</h3>
+                    <form id="teacher-feedback-form">
+                        <input type="text" id="feedback-student" placeholder="Email sinh viên" required>
+                        <textarea id="feedback-text" placeholder="Nhận xét..." rows="5" required></textarea>
+                        <button type="submit" class="ripple-btn">Gửi</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile" class="section" style="display: none;">
+        <div class="container">
+            <h2>Profile Người Dùng</h2>
+            <div class="profile-content">
+                <div class="profile-details">
+                    <img id="profile-avatar" src="https://picsum.photos/150" alt="Avatar" loading="lazy">
+                    <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                    <h3 id="profile-name">Tên người dùng</h3>
+                    <p id="profile-email">student@fpt.edu.vn</p>
+                    <button id="edit-profile" class="ripple-btn">Chỉnh sửa</button>
+                    <button id="upload-video-btn" class="action-btn ripple-btn">Gửi Video</button>
+                </div>
+                <div class="profile-stats">
+                    <div class="progress-circle" id="progress-circle">
+                        <svg>
+                            <circle cx="100" cy="100" r="90"></circle>
+                            <circle cx="100" cy="100" r="90" id="progress-fill"></circle>
+                        </svg>
+                        <div class="progress-text" id="progress-text">0%</div>
+                    </div>
+                    <p id="points-text">Điểm thưởng: 0</p>
+                    <p id="level-text">Cấp độ: 1</p>
+                    <div class="profile-badges">
+                        <h3>Huy hiệu</h3>
+                        <div id="badge-list" class="badge-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ranking Section -->
+    <section id="ranking" class="section" style="display: none;">
+        <canvas id="particles-js-ranking"></canvas>
+        <div class="container">
+            <h2>Bảng Xếp Hạng Top 10</h2>
+            <div class="ranking-frame">
+                <div class="ranking-list" id="ranking-list"></div>
+                <div class="ranking-controls">
+                    <button class="scroll-up-btn ripple-btn"><i class="fas fa-chevron-up"></i></button>
+                    <button class="scroll-down-btn ripple-btn"><i class="fas fa-chevron-down"></i></button>
+                </div>
+            </div>
+            <button class="back-btn ripple-btn" id="back-to-home">Quay lại</button>
+        </div>
+    </section>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-modal">×</span>
+            <div class="auth-form">
+                <h2 id="modal-title">Đăng nhập</h2>
+                <form id="auth-form">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="login-email" placeholder="Email" required>
+                        <span class="error" id="email-error"></span>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="login-password" placeholder="Mật khẩu" required>
+                        <span class="error" id="password-error"></span>
+                    </div>
+                    <button type="submit" class="auth-submit ripple-btn">Đăng nhập</button>
+                </form>
+                <p class="toggle-auth">Chưa có tài khoản? <a href="#" id="toggle-link">Đăng ký</a></p>
+                <div class="social-login">
+                    <button class="social-btn google ripple-btn"><i class="fab fa-google"></i> Google</button>
+                    <button class="social-btn facebook ripple-btn"><i class="fab fa-facebook-f"></i> Facebook</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Upload Modal -->
+    <div id="video-upload-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-modal">×</span>
+            <h2>Gửi Video Luyện Tập</h2>
+            <form id="video-upload-form">
+                <input type="file" id="video-file" accept="video/*" required>
+                <textarea id="video-note" placeholder="Ghi chú cho giảng viên..." rows="4"></textarea>
+                <button type="submit" class="feedback-submit ripple-btn">Gửi</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Flashcard Test Modal -->
+    <div id="flashcard-test-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-modal">×</span>
+            <h2>Kiểm Tra Flashcard</h2>
+            <div id="flashcard-test-content" class="flashcard-test-content"></div>
+            <button id="submit-test" class="ripple-btn">Nộp bài</button>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div id="chatbot" class="chatbot">
+        <div class="chatbot-header">
+            <span>Trợ lý FPT</span>
+            <span class="chatbot-close">×</span>
+        </div>
+        <div class="chatbot-body">
+            <div id="chatbot-loading" class="chatbot-loading" style="display: none;">
+                <div class="spinner"></div>
+                <span>Đang xử lý...</span>
+            </div>
+        </div>
+        <div class="chatbot-footer">
+            <select id="predefined-questions" class="hidden-questions">
+                <option value=""></option>
+                <option value="Làm sao để chơi đàn tranh?">Làm sao để chơi đàn tranh?</option>
+                <option value="Các bước tập Vovinam cơ bản?">Các bước tập Vovinam cơ bản?</option>
+                <option value="Làm thế nào để thổi sáo?">Làm thế nào để thổi sáo?</option>
+            </select>
+            <input type="text" id="chat-input" placeholder="Nhập câu hỏi..." list="chat-suggestions">
+            <datalist id="chat-suggestions"></datalist>
+            <button id="send-msg" class="ripple-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <button id="chatbot-toggle" class="chatbot-toggle ripple-btn"><i class="fas fa-comment-alt"></i></button>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h4>FPT Learning Hub</h4>
+                    <p>Nền tảng học tập trực tuyến miễn phí dành cho sinh viên FPT.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Liên kết</h4>
+                    <ul>
+                        <li><a href="https://fpt.edu.vn/support">Hỗ trợ</a></li>
+                        <li><a href="https://fpt.edu.vn/policy">Chính sách</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Liên hệ</h4>
+                    <p><i class="far fa-envelope"></i> <a href="mailto:support@fpt.edu.vn">support@fpt.edu.vn</a></p>
+                    <p><i class="fas fa-phone"></i> (+84) 24 7300 5588</p>
+                </div>
+            </div>
+            <p class="footer-credit">© 2025 FPT Learning Hub. Được xây dựng bởi AI 19C.</p>
+        </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
